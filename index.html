@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+		#blue {
+		border: solid 4px #00FFFF;
+		width: 50px;
+		height: 50px;
+		display: inline-block;
+		}
+		
+		#white {
+		border: solid 4px #FFFFFF;
+		width: 200px;
+		height: 50px;
+		display: inline-block;
+		}
+		
+		#red {
+		border: solid 4px #FF0000;
+		width: 50px;
+		height: 50px;
+		display: inline-block;
+		}
+		
+		#button {
+		text-align: center;
+		position: absolute;
+		top: 50%;
+		margin-left: 575px;
+		}
+		</style>
+		<body bgcolor="#546e7a">
+			<title>Keep The Mouse In The Lines</title>
+		</head>
+		<body>
+			<div id="button">
+				<button type="button" onclick="start()">Start?</button>
+			</div>
+			<div id="bar">
+				<div id="blue">
+				</div>
+				<div id="white">
+				</div>
+				<div id="red">
+				</div>
+				</div>
+				<div id="lose">
+					<h1>You Lose!</h1>
+				</div>
+				<div id="try" onclick="again()">
+					<button type="button" onclick="start()">Start Again?</button>
+				</div>
+			</div>
+
+			<script>
+var counter = 2;
+var heightChange = 105;
+			document.getElementById('white').style.display = 'none';
+			document.getElementById('red').style.display = 'none';
+			document.getElementById('blue').style.display = 'none';
+			document.getElementById('lose').style.display = 'none';
+			document.getElementById('try').style.display = 'none';
+
+			function start() {
+			    document.getElementById('white').style.display = 'inline-block';
+			    document.getElementById('red').style.display = 'inline-block';
+			    document.getElementById('blue').style.display = 'inline-block	';
+			    document.getElementById('button').style.display = 'none';
+			    var hasStarted = false;
+			    var hasWon = false;
+			    (function() {
+			            document.onmousemove = handleMouseMove;
+
+			            function handleMouseMove(event) {
+			                var dot, eventDoc, doc, body, pageX, pageY;
+			                event = event || window.event; // IE-ism
+			                // If pageX/Y aren't available and clientX/Y are,
+			                // calculate pageX/Y - logic taken from jQuery.
+			                // (This is to support old IE)
+			                if (event.pageX == null && event.clientX != null) {
+			                    eventDoc = (event.target && event.target.ownerDocument) || document;
+			                    doc = eventDoc.documentElement;
+			                    body = eventDoc.body;
+			                    event.pageX = event.clientX +
+			                        (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+			                        (doc && doc.clientLeft || body && body.clientLeft || 0);
+			                    event.pageY = event.clientY +
+			                        (doc && doc.scrollTop || body && body.scrollTop || 0) -
+			                        (doc && doc.clientTop || body && body.clientTop || 0);
+			                }
+			                // Use event.pageX / event.pageY here
+			                if (event.pageX < 105 && event.pageY < heightChange || hasStarted) {
+			                    hasStarted = true;
+			                    if (event.pageX < 7 || event.pageX > 445 || event.pageY > heightChange || event.pageY < 10) {
+			                        alert("You Lost!");			              
+			                        hasStarted = false;
+
+			                        end();
+
+			                    }
+			                    if (event.pageX > 345 && event.pageX < 440 && event.pageY < heightChange && event.pageY > 7){
+			                        hasWon = true;
+			                        alert("Good Job!");	
+			                        again();		                    
+			                    }
+			                }
+			            }
+			        
+			    }
+			)();
+			}
+function end(){
+	counter = 1;
+	document.getElementById('white').style.display = 'none';
+			document.getElementById('red').style.display = 'none';
+			document.getElementById('blue').style.display = 'none';
+			document.getElementById('lose').style.display = 'block';
+			document.getElementById('try').style.display = 'block';
+
+}
+			function again(){
+				var number = 50;
+				var change = number/counter;
+				heightChange = heightChange - change;
+				var numberString = change + "px";
+				document.getElementById('lose').style.display = 'none';
+			document.getElementById('try').style.display = 'none';
+			document.getElementById("blue").style.height = numberString;
+			document.getElementById("white").style.height = numberString;
+			document.getElementById("red").style.height = numberString;
+counter++;
+				start();
+
+			}
+
+
+
+
+
+			</script>
+		</body>
+	</html>
